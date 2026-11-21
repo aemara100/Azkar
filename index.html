@@ -2,34 +2,135 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>أذكار الصباح والمساء</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f8; color: #2c3e50; display: flex; flex-direction: column; min-height: 100vh; }
-        header { background-color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; padding: 15px 10px; text-align: center; }
-        h1 { font-size: 22px; color: #16a085; margin-bottom: 15px; }
-        .tabs { display: flex; justify-content: center; gap: 10px; }
-        .tabs button { flex: 1; max-width: 200px; padding: 12px; font-size: 18px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; background-color: #e0e0e0; color: #333; transition: all 0.3s ease; }
-        .tabs button.active { background-color: #16a085; color: white; box-shadow: 0 4px 6px rgba(22, 160, 133, 0.3); }
-        main { flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 15px; max-width: 800px; margin: 0 auto; width: 100%; }
-        .dhikr-card { background-color: #ffffff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 6px solid #16a085; cursor: pointer; transition: all 0.4s ease; user-select: none; }
-        .dhikr-text { font-size: 24px; line-height: 1.8; font-weight: 500; text-align: justify; }
-        .dhikr-count { margin-top: 15px; font-size: 18px; font-weight: bold; color: #e67e22; background-color: #fdf2e9; display: inline-block; padding: 5px 15px; border-radius: 20px; }
-        .dhikr-card.read { opacity: 0.4; background-color: #e8f8f5; border-right-color: #bdc3c7; transform: scale(0.98); }
+        
+        html, body { 
+            width: 100%; 
+            min-height: 100vh; 
+            min-height: 100dvh; 
+            background-color: #f4f6f8; 
+            color: #2c3e50; 
+            overflow-y: auto;
+        }
+        
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            padding: 10px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 800px; /* يضمن التمركز على التابلت والآيباد */
+        }
+
+        header { 
+            background-color: #ffffff; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            padding: 15px 10px; 
+            text-align: center; 
+            width: 100%;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        h1 { 
+            font-size: clamp(20px, 5vw, 26px); 
+            color: #16a085; 
+            margin-bottom: 15px; 
+        }
+        
+        .tabs { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+        
+        .tabs button { 
+            flex: 1; 
+            max-width: 250px; 
+            padding: 12px; 
+            font-size: clamp(14px, 4vw, 18px); 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            background-color: #e0e0e0; 
+            color: #333; 
+            transition: all 0.3s ease; 
+        }
+        
+        .tabs button.active { 
+            background-color: #16a085; 
+            color: white; 
+            box-shadow: 0 4px 6px rgba(22, 160, 133, 0.3); 
+        }
+        
+        main { 
+            flex: 1; 
+            padding: 15px 0; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            width: 100%;
+        }
+        
+        .dhikr-card { 
+            background-color: #ffffff; 
+            border-radius: 15px; 
+            padding: 20px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
+            border-right: 6px solid #16a085; 
+            cursor: pointer; 
+            transition: all 0.4s ease; 
+            user-select: none; 
+        }
+        
+        .dhikr-text { 
+            font-size: clamp(18px, 5vw, 26px); /* خط كبير ومتجاوب */
+            line-height: 1.8; 
+            font-weight: 500; 
+            text-align: justify; 
+        }
+        
+        .dhikr-count { 
+            margin-top: 15px; 
+            font-size: clamp(14px, 4vw, 18px); 
+            font-weight: bold; 
+            color: #e67e22; 
+            background-color: #fdf2e9; 
+            display: inline-block; 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+        }
+        
+        .dhikr-card.read { 
+            opacity: 0.4; 
+            background-color: #e8f8f5; 
+            border-right-color: #bdc3c7; 
+            transform: scale(0.98); 
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>أذكار الصباح والمساء</h1>
-        <div class="tabs">
-            <button id="btn-morning" class="active" onclick="switchTab('morning')">أذكار الصباح</button>
-            <button id="btn-evening" onclick="switchTab('evening')">أذكار المساء</button>
-        </div>
-    </header>
+    <div class="main-container">
+        <header>
+            <h1>أذكار الصباح والمساء</h1>
+            <div class="tabs">
+                <button id="btn-morning" class="active" onclick="switchTab('morning')">أذكار الصباح</button>
+                <button id="btn-evening" onclick="switchTab('evening')">أذكار المساء</button>
+            </div>
+        </header>
 
-    <main id="adhkar-container"></main>
+        <main id="adhkar-container"></main>
+    </div>
 
     <script>
         // الأذكار المشتركة (القرآن والأدعية التي تقال صباحاً ومساءً)
